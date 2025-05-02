@@ -1,48 +1,40 @@
-penguin-weight-monitoring/  
-│
-├── **firmware/**                 # ESP32 Code (Arduino)  
-│   ├── **main/**  
-│   │   ├── main.ino             # Main ESP32 firmware  
-│   │   ├── hx711_handler.cpp    # Load cell (HX711) interface  
-│   │   ├── rfid_handler.cpp     # RFID reader (MFRC522/PN532)  
-│   │   ├── rtc_handler.cpp      # Real-time clock (DS3231)  
-│   │   ├── kalman_filter.cpp    # Weight noise filtering  
-│   │   └── wifi_mqtt.cpp        # Wireless data transmission  
-│   │
-│   └── **libraries/**            # Required Arduino libraries  
-│
-├── **backend/**                  # Cloud Server (Node.js)  
-│   ├── **models/**  
-│   │   ├── Penguin.js           # Mongoose schema  
-│   │   ├── WeightReading.js     # Weight data schema  
-│   │   └── Colony.js            # Colony location schema  
-│   │
-│   ├── **routes/**  
-│   │   ├── api.js               # REST API endpoints  
-│   │   └── mqtt_handler.js      # MQTT data ingestion  
-│   │
-│   ├── **services/**  
-│   │   ├── db.js               # MongoDB connection  
-│   │   └── kalman_filter.js    # Server-side data smoothing  
-│   │
-│   └── server.js               # Express server  
-│
-├── **frontend/**                # Dashboard (HTML/CSS/JS)  
-│   ├── **public/**  
-│   │   ├── index.html          # Dashboard UI (TailwindCSS)  
-│   │   ├── dashboard.js        # Real-time updates  
-│   │   ├── maps.js             # Colony geospatial visualization  
-│   │   └── analytics.js        # Weight trend charts  
-│   │
-│   └── package.json            # Frontend dependencies  
-│
-├── **database/**                # MongoDB Setup  
-│   ├── init_collections.js     # Schema validation setup  
-│   └── sample_data.json        # Mock penguin/colony data  
-│
-├── **docs/**  
-│   ├── ER_Diagram.md           # Mermaid.js schema  
-│   ├── hardware_setup.md       # Wiring guide  
-│   └── api_docs.md            # REST API reference  
-│
-└── README.md                   # Project overview  
+# Penguin Weight Monitoring System 🐧⚖️
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![ESP32](https://img.shields.io/badge/ESP32-IoT-blue)](https://www.espressif.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-NoSQL-green)](https://www.mongodb.com/)
+
+A full-stack IoT system for tracking penguin health metrics in conservation environments. Combines **ESP32 hardware sensors**, **cloud data storage**, and **real-time analytics**.
+
+## Features ✨
+
+- 🏷️ **RFID Identification** - MFRC522 reader for penguin tagging
+- ⚖️ **Precision Weight Tracking** - HX711 load cells with Kalman filtering
+- ⏱️ **Accurate Timestamps** - DS3231 RTC module
+- ☁️ **Wireless Data Sync** - MQTT/HTTP to cloud
+- 🗃️ **MongoDB Backend** - Optimized time-series storage
+- 📊 **Live Dashboard** - Real-time monitoring with TailwindCSS
+
+## Hardware Setup 🔧
+
+### Components
+| Component | Purpose |
+|-----------|---------|
+| ESP32 | Main microcontroller |
+| HX711 + Load Cell | Weight measurement |
+| MFRC522 | RFID penguin identification |
+| DS3231 | Precise timestamps |
+| 18650 Battery | Field power supply |
+
+### Wiring Diagram
+```plaintext
+HX711 <-> ESP32:
+DOUT -> GPIO12
+PD_SCK -> GPIO13
+
+MFRC522 <-> ESP32:
+SDA -> GPIO5
+SCK -> GPIO18
+MOSI -> GPIO23
+MISO -> GPIO19
+RST -> GPIO15
