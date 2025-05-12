@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Penguin Dashboard</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    #map { height: 500px; }
+    .active-nav-item { background-color: #1e40af; }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <div class="hidden md:flex md:flex-shrink-0">
+      <div class="flex flex-col w-64 bg-blue-900 text-white">
+        <div class="flex items-center justify-center h-16 px-4 border-b border-blue-800">
+          <h2 class="text-xl font-bold">🐧 Penguin Dashboard</h2>
+        </div>
+        <div class="flex flex-col flex-grow px-4 py-4 overflow-y-auto">
+          <nav class="flex-1 space-y-2">
+            <a onclick="showSection('profile')" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-800 active-nav-item">
+              <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+              Profile
+            </a>
+            <a onclick="showSection('map-section')" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-800">
+              <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+              </svg>
+              Map
+            </a>
+            <a onclick="showSection('analytics')" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg hover:bg-blue-800">
+              <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+              Analytics
+            </a>
+          </nav>
+        </div>
+        <div class="p-4 border-t border-blue-800">
+          <div class="flex items-center">
+            <img class="w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1584556812955-6f0b0c0b08be?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="Penguin researcher">
+            <div class="ml-3">
+              <p class="text-sm font-medium">Researcher</p>
+              <p class="text-xs text-blue-200">Penguin Team</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="flex flex-col flex-1 overflow-hidden">
+      <!-- Mobile header -->
+      <header class="md:hidden bg-blue-900 text-white p-4 flex items-center justify-between">
+        <h1 class="text-xl font-bold">🐧 Waddle Way Dashboard</h1>
+        <button onclick="toggleMobileMenu()" class="p-2 rounded-md hover:bg-blue-800">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </header>
+
+      <!-- Mobile menu (hidden by default) -->
+      <div id="mobile-menu" class="hidden md:hidden bg-blue-800 text-white">
+        <nav class="px-2 pt-2 pb-4 space-y-1">
+          <a onclick="showSection('profile')" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-700">Profile</a>
+          <a onclick="showSection('map-section')" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-700">Map</a>
+          <a onclick="showSection('analytics')" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-blue-700">Analytics</a>
+        </nav>
+      </div>
+
+      <!-- Content area -->
+      <main class="flex-1 overflow-y-auto p-4 md:p-6">
+        <!-- Profile Section -->
+        <div id="profile" class="section">
+          <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+              <div class="p-6">
+                <div class="flex items-center mb-6">
+                  <img class="w-16 h-16 rounded-full mr-4" src="https://images.unsplash.com/photo-1584556812955-6f0b0c0b08be?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="Penguin researcher">
+                  <div>
+                    <h2 class="text-2xl font-bold text-gray-800">Penguin Monitoring Dashboard</h2>
+                    <p class="text-gray-600">Track and analyze penguin colonies</p>
+                  </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-blue-800 mb-2">Colonies Monitored</h3>
+                    <p class="text-3xl font-bold text-blue-600">5</p>
+                  </div>
+                  <div class="bg-green-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-green-800 mb-2">Total Penguins</h3>
+                    <p class="text-3xl font-bold text-green-600">2,450</p>
+                  </div>
+                </div>
+                
+                <div class="border-t border-gray-200 pt-4">
+                  <h3 class="text-lg font-semibold text-gray-800 mb-3">Recent Activity</h3>
+                  <ul class="space-y-3">
+                    <li class="flex items-start">
+                      <span class="flex-shrink-0 bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded-full mr-3">New</span>
+                      <span class="text-gray-700">Added new colony data from Dassen Island</span>
+                    </li>
+                    <li class="flex items-start">
+                      <span class="flex-shrink-0 bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded-full mr-3">Update</span>
+                      <span class="text-gray-700">Updated population estimates for False Bay</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div id="analytics" class="section hidden">
+          <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+              <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                  <h2 class="text-2xl font-bold text-gray-800" id="analytics-title">Penguin Analytics</h2>
+                  <div class="relative">
+                    <select id="colony-selector" class="block appearance-none bg-gray-100 border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
+                      <option value="all">All Colonies</option>
+                      <option value="Hollamsbird Island">Hollamsbird Island</option>
+                      <option value="Dassen Island">Dassen Island</option>
+                      <option value="False Bay (Boulders)">False Bay (Boulders)</option>
+                      <option value="Robben Island">Robben Island</option>
+                      <option value="Algoa Bay">Algoa Bay</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                  <div class="border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-700 mb-3">Population Trends</h3>
+                    <div class="bg-gray-100 h-48 rounded flex items-center justify-center text-gray-400" id="population-chart">
+                      [Population chart will go here]
+                    </div>
+                  </div>
+                  <div class="border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-700 mb-3">Breeding Success Rate</h3>
+                    <div class="bg-gray-100 h-48 rounded flex items-center justify-center text-gray-400" id="breeding-chart">
+                      [Breeding chart will go here]
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                  <h3 class="font-semibold text-gray-700 mb-3">Colony Data</h3>
+                  <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Metric</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Value</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trend</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Updated</th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="colony-data">
+                      <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Map Section -->
+        <div id="map-section" class="section hidden">
+          <div class="max-w-6xl mx-auto">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+              <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                  <h2 class="text-2xl font-bold text-gray-800">Colony Locations</h2>
+                  <div class="relative">
+                    <select id="map-colony-selector" class="block appearance-none bg-gray-100 border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
+                      <option value="all">All Colonies</option>
+                      <option value="Hollamsbird Island">Hollamsbird Island</option>
+                      <option value="Dassen Island">Dassen Island</option>
+                      <option value="False Bay (Boulders)">False Bay (Boulders)</option>
+                      <option value="Robben Island">Robben Island</option>
+                      <option value="Algoa Bay">Algoa Bay</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                  </div>
+                </div>
+                
+                <div id="map" class="rounded-lg border border-gray-200 overflow-hidden"></div>
+                
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-blue-800 mb-2">Total Colonies</h3>
+                    <p class="text-2xl font-bold text-blue-600">5</p>
+                  </div>
+                  <div class="bg-green-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-green-800 mb-2">Active Monitoring</h3>
+                    <p class="text-2xl font-bold text-green-600">4</p>
+                  </div>
+                  <div class="bg-purple-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-purple-800 mb-2">New This Year</h3>
+                    <p class="text-2xl font-bold text-purple-600">1</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Colony data
+    const colonyData = {
+      "Hollamsbird Island": {
+        population: 450,
+        breedingRate: "72%",
+        trend: "Stable",
+        lastSurvey: "2023-05-15",
+        populationHistory: [420, 430, 440, 445, 450],
+        breedingHistory: [65, 68, 70, 71, 72]
+      },
+      "Dassen Island": {
+        population: 1200,
+        breedingRate: "85%",
+        trend: "Growing",
+        lastSurvey: "2023-06-22",
+        populationHistory: [1100, 1120, 1150, 1180, 1200],
+        breedingHistory: [80, 82, 83, 84, 85]
+      },
+      "False Bay (Boulders)": {
+        population: 650,
+        breedingRate: "68%",
+        trend: "Declining",
+        lastSurvey: "2023-04-10",
+        populationHistory: [700, 680, 670, 660, 650],
+        breedingHistory: [72, 71, 70, 69, 68]
+      },
+      "Robben Island": {
+        population: 320,
+        breedingRate: "65%",
+        trend: "Stable",
+        lastSurvey: "2023-03-18",
+        populationHistory: [310, 315, 320, 320, 320],
+        breedingHistory: [63, 64, 65, 65, 65]
+      },
+      "Algoa Bay": {
+        population: 230,
+        breedingRate: "60%",
+        trend: "Growing",
+        lastSurvey: "2023-07-05",
+        populationHistory: [200, 210, 215, 220, 230],
+        breedingHistory: [55, 57, 58, 59, 60]
+      }
+    };
+
+    // Set active nav item
+    function setActiveNavItem(id) {
+      document.querySelectorAll('nav a').forEach(link => {
+        link.classList.remove('active-nav-item');
+      });
+      document.querySelector(`a[onclick="showSection('${id}')"]`).classList.add('active-nav-item');
+    }
+
+    // Show section
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.add('hidden');
+      });
+      document.getElementById(id).classList.remove('hidden');
+      setActiveNavItem(id);
+
+      if (id === 'map-section') {
+        setTimeout(initMap, 300);
+      }
+      
+      // Hide mobile menu if open
+      document.getElementById('mobile-menu').classList.add('hidden');
+    }
+
+    // Show analytics for a specific colony
+    function showColonyAnalytics(colonyName) {
+      showSection('analytics');
+      
+      if (colonyName === 'all') {
+        document.getElementById('analytics-title').textContent = 'All Colonies Analytics';
+        // Show general analytics for all colonies
+        renderAllColoniesAnalytics();
+      } else {
+        document.getElementById('analytics-title').textContent = `${colonyName} Analytics`;
+        // Show analytics for specific colony
+        renderColonyAnalytics(colonyName);
+      }
+      
+      // Update dropdown to match selected colony
+      document.getElementById('colony-selector').value = colonyName;
+    }
+
+    // Render analytics for all colonies
+    function renderAllColoniesAnalytics() {
+      const tableBody = document.getElementById('colony-data');
+      tableBody.innerHTML = '';
+      
+      // Create summary rows for each colony
+      for (const [colonyName, data] of Object.entries(colonyData)) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${colonyName}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${data.population}</td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+              data.trend === 'Growing' ? 'bg-green-100 text-green-800' : 
+              data.trend === 'Declining' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
+            }">${data.trend}</span>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${data.lastSurvey}</td>
+        `;
+        row.addEventListener('click', () => showColonyAnalytics(colonyName));
+        row.classList.add('cursor-pointer', 'hover:bg-gray-50');
+        tableBody.appendChild(row);
+      }
+      
+      // Update charts placeholder
+      document.getElementById('population-chart').textContent = 'Overall population trends for all colonies';
+      document.getElementById('breeding-chart').textContent = 'Average breeding success: 70%';
+    }
+
+    // Render analytics for a specific colony
+    function renderColonyAnalytics(colonyName) {
+      const colony = colonyData[colonyName];
+      const tableBody = document.getElementById('colony-data');
+      tableBody.innerHTML = '';
+      
+      // Create detailed rows for the colony
+      const metrics = [
+        { name: 'Population', value: colony.population, trend: colony.trend },
+        { name: 'Breeding Success Rate', value: colony.breedingRate, trend: colony.trend },
+        { name: 'Nests Count', value: Math.floor(colony.population / 2), trend: colony.trend },
+        { name: 'Chicks Fledged', value: Math.floor(colony.population * parseFloat(colony.breedingRate) / 100), trend: colony.trend }
+      ];
+      
+      metrics.forEach(metric => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${metric.name}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${metric.value}</td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+              metric.trend === 'Growing' ? 'bg-green-100 text-green-800' : 
+              metric.trend === 'Declining' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
+            }">${metric.trend}</span>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${colony.lastSurvey}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+      
+      // Update charts placeholder with colony-specific data
+      document.getElementById('population-chart').textContent = `Population trend for ${colonyName}: ${colony.populationHistory.join(' → ')}`;
+      document.getElementById('breeding-chart').textContent = `Breeding success for ${colonyName}: ${colony.breedingHistory.join('% → ')}%`;
+    }
+
+    // Toggle mobile menu
+    function toggleMobileMenu() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    }
+
+    // Initialize map
+    let mapInitialized = false;
+    let map;
+    let markers = [];
+    function initMap() {
+      if (mapInitialized) return;
+
+      const colonyStations = [
+        { name: "Hollamsbird Island", lat: -23.045, lon: 14.380 },
+        { name: "Dassen Island", lat: -33.383, lon: 18.083 },
+        { name: "Robben Island", lat: -33.806, lon: 18.366 },
+        { name: "False Bay (Boulders)", lat: -34.196, lon: 18.451 },
+        { name: "Algoa Bay", lat: -33.800, lon: 25.683 }
+      ];
+
+      map = L.map('map').setView([-30, 20], 5);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      // Clear any existing markers
+      markers.forEach(marker => map.removeLayer(marker));
+      markers = [];
+
+      colonyStations.forEach(station => {
+        const marker = L.marker([station.lat, station.lon]).addTo(map);
+        markers.push(marker);
+        
+        const colony = colonyData[station.name] || {
+          population: Math.floor(Math.random() * 1000) + 200,
+          breedingRate: `${Math.floor(Math.random() * 30) + 60}%`,
+          trend: ["Stable", "Growing", "Declining"][Math.floor(Math.random() * 3)],
+          lastSurvey: "2023-" + (Math.floor(Math.random() * 12) + 1).toString().padStart(2, '0') + "-" + (Math.floor(Math.random() * 28) + 1).toString().padStart(2, '0')
+        };
+        
+        marker.bindPopup(`
+          <div class="p-2">
+            <h4 class="font-bold text-lg mb-1">${station.name}</h4>
+            <p class="text-gray-700 mb-1">Population: ${colony.population}</p>
+            <p class="text-gray-700 mb-1">Breeding: ${colony.breedingRate}</p>
+            <p class="text-gray-700 mb-2">Status: ${colony.trend}</p>
+            <button onclick="showColonyAnalytics('${station.name}')" 
+              class="w-full bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded text-sm">
+              View Analytics
+            </button>
+          </div>
+        `);
+        
+        // Click handler for the marker
+        marker.on('click', function() {
+          showColonyAnalytics(station.name);
+        });
+      });
+
+      // Set up dropdown change handler
+      document.getElementById('map-colony-selector').addEventListener('change', function() {
+        if (this.value === 'all') {
+          // Show all markers
+          markers.forEach(marker => map.addLayer(marker));
+          map.setView([-30, 20], 5);
+        } else {
+          // Zoom to selected colony
+          const selectedColony = colonyStations.find(c => c.name === this.value);
+          if (selectedColony) {
+            map.setView([selectedColony.lat, selectedColony.lon], 10);
+            // Show analytics for selected colony
+            showColonyAnalytics(this.value);
+          }
+        }
+      });
+
+      // Set up analytics dropdown change handler
+      document.getElementById('colony-selector').addEventListener('change', function() {
+        showColonyAnalytics(this.value);
+      });
+
+      mapInitialized = true;
+    }
+
+    // Set profile as default active section
+    document.addEventListener('DOMContentLoaded', function() {
+      setActiveNavItem('profile');
+    });
+  </script>
+</body>
+</html>
