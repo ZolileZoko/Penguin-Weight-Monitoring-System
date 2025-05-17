@@ -4,7 +4,7 @@
 [![ESP32](https://img.shields.io/badge/ESP32-IoT-blue)](https://www.espressif.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-NoSQL-green)](https://www.mongodb.com/)
 
-A full-stack IoT system for tracking penguin health metrics in conservation environments. Combines **ESP32 hardware sensors**, **cloud data storage**, and **real-time analytics**.
+A full-stack IoT system for tracking penguin weight in conservation environments. Combines **ESP32 hardware sensors**, **cloud data storage**, and **real-time analytics**.
 
 ## Features ✨
 
@@ -24,7 +24,7 @@ A full-stack IoT system for tracking penguin health metrics in conservation envi
 | HX711 + Load Cell | Weight measurement |
 | MFRC522 | RFID penguin identification |
 | DS3231 | Precise timestamps |
-| 18650 Battery | Field power supply |
+| 12V Power Supply| Powering Hardware|
 
 ### Wiring Diagram
 ```plaintext
