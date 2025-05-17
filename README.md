@@ -24,7 +24,7 @@ A full-stack IoT system for tracking penguin weight in conservation environments
 | HX711 + Load Cell | Weight measurement |
 | MFRC522 | RFID penguin identification |
 | DS3231 | Precise timestamps |
-| 18650 Battery | Field power supply |
+| 12V Power Supply| Powering Hardware|
 
 ### Wiring Diagram
 ```plaintext
