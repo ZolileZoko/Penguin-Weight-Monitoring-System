@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .wireframe {
+      border: 1px dashed #999;
+      background: #f5f5f5;
+      color: #333;
+      padding: 10px;
+      margin: 5px;
+    }
+    .sidebar { width: 25%; float: left; }
+    .main { width: 70%; float: right; }
+    .image-card { 
+      width: 150px; 
+      height: 100px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="wireframe sidebar">
+    <h3>🐧 Penguin Dashboard</h3>
+    <div class="wireframe">Profile</div>
+    <div class="wireframe">Map</div>
+    <div class="wireframe">Analytics</div>
+    <h4>Recent Images</h4>
+    <div class="wireframe image-card">IMG1</div>
+    <div class="wireframe image-card">IMG2</div>
+  </div>
+
+  <div class="wireframe main">
+    <h2>Dashboard</h2>
+    <div class="wireframe">Colonies: 5</div>
+    <div class="wireframe">Penguins: 2,450</div>
+    <div class="wireframe" style="height:300px;">Map View</div>
+  </div>
+
+  <div style="clear:both;">
+    <div class="wireframe" style="height:150px; overflow:hidden;">
+      <div style="white-space: nowrap;">
+        <div class="wireframe image-card">IMG1</div>
+        <div class="wireframe image-card">IMG2</div>
+        <!-- Repeat 10x -->
+      </div>
+    </div>
+  </div>
+</body>
+</html>

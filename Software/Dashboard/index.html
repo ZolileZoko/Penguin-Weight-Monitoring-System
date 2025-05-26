@@ -155,64 +155,80 @@
             </div>
           </div>
         </div>
+<!-- Analytics Section -->
+<div id="analytics" class="section hidden">
+  <div class="max-w-4xl mx-auto">
+    <div class="rounded-lg shadow-md overflow-hidden">
+      <div class="p-6">
+        <!-- Header and Dropdown -->
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-primary" id="analytics-title">Penguin Analytics</h2>
+          <div class="relative">
+            <select id="colony-selector" class="block appearance-none bg-gray-100 border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-accent">
+              <option value="all">All Colonies</option>
+              <option value="Hollamsbird Island">Hollamsbird Island</option>
+              <option value="Dassen Island">Dassen Island</option>
+              <option value="False Bay (Boulders)">False Bay (Boulders)</option>
+              <option value="Robben Island">Robben Island</option>
+              <option value="Algoa Bay">Algoa Bay</option>
+            </select>
+          </div>
+        </div>
 
-        <!-- Analytics Section -->
-        <div id="analytics" class="section hidden">
-          <div class="max-w-4xl mx-auto">
-            <div class="rounded-lg shadow-md overflow-hidden">
-              <div class="p-6">
-                <div class="flex justify-between items-center mb-6">
-                  <h2 class="text-2xl font-bold text-primary" id="analytics-title">Penguin Analytics</h2>
-                  <div class="relative">
-                    <select id="colony-selector" class="block appearance-none bg-gray-100 border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-accent">
-                      <option value="all">All Colonies</option>
-                      <option value="Hollamsbird Island">Hollamsbird Island</option>
-                      <option value="Dassen Island">Dassen Island</option>
-                      <option value="False Bay (Boulders)">False Bay (Boulders)</option>
-                      <option value="Robben Island">Robben Island</option>
-                      <option value="Algoa Bay">Algoa Bay</option>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  <div class="border border-gray-200 rounded-lg p-4">
-                    <h3 class="font-semibold text-primary mb-3">Population Trends</h3>
-                    <div class="bg-gray-100 h-48 rounded flex items-center justify-center text-gray-400" id="population-chart">
-                      [Population chart will go here]
-                    </div>
-                  </div>
-                  <div class="border border-gray-200 rounded-lg p-4">
-                    <h3 class="font-semibold text-primary mb-3">Breeding Success Rate</h3>
-                    <div class="bg-gray-100 h-48 rounded flex items-center justify-center text-gray-400" id="breeding-chart">
-                      [Breeding chart will go here]
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="overflow-x-auto">
-                  <h3 class="font-semibold text-primary mb-3">Colony Data</h3>
-                  <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                      <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Metric</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Value</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trend</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Updated</th>
-                      </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200" id="colony-data">
-                      <!-- Data will be populated by JavaScript -->
-                    </tbody>
-                  </table>
-                </div>
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div class="border border-gray-200 rounded-lg p-4">
+            <h3 class="font-semibold text-primary mb-3">Population Trends</h3>
+            <div class="bg-gray-100 h-48 rounded flex items-center justify-center text-gray-400" id="population-chart">
+              [Population chart will go here]
+            </div>
+          </div>
+          <div class="border border-gray-200 rounded-lg p-4">
+            <h3 class="font-semibold text-primary mb-3">Live Weight Platform measurement</h3>
+            <div class="bg-gray-100 h-48 rounded flex items-center justify-center text-gray-400" id="breeding-chart">
+              [Breeding chart will go here]
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Table Section -->
+        <div class="mb-8">
+          <div class="overflow-x-auto">
+            <h3 class="font-semibold text-primary mb-3">Colony Data</h3>
+            <table class="min-w-full divide-y divide-gray-200">
+              <!-- Table content -->
+            </table>
+          </div>
+        </div>
+
+        <!-- Export Section - Cleanly Separated -->
+        <div class="border-t border-gray-200 pt-6">
+          <h3 class="text-lg font-semibold text-primary mb-4">Data Export</h3>
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                <input type="date" id="export-start-date" class="w-full rounded-md border-gray-300 shadow-sm focus:border-accent focus:ring focus:ring-accent">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                <input type="date" id="export-end-date" class="w-full rounded-md border-gray-300 shadow-sm focus:border-accent focus:ring focus:ring-accent">
+              </div>
+              <div class="flex items-end">
+                <button onclick="exportColonyData()" class="w-full bg-accent hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out">
+                  <svg class="w-5 h-5 inline mr-2 -mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                  </svg>
+                  Export CSV
+                </button>
               </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
 
         <!-- Map Section -->
         <div id="map-section" class="section hidden">
@@ -332,6 +348,8 @@
     </div>
   </div>
 
+
+  
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
     // Colony data
@@ -342,39 +360,31 @@
         trend: "Stable",
         lastSurvey: "2023-05-15",
         populationHistory: [420, 430, 440, 445, 450],
-        breedingHistory: [65, 68, 70, 71, 72]
       },
       "Dassen Island": {
         population: 1200,
         breedingRate: "85%",
         trend: "Growing",
         lastSurvey: "2023-06-22",
-        populationHistory: [1100, 1120, 1150, 1180, 1200],
-        breedingHistory: [80, 82, 83, 84, 85]
+        populationHistory: [1100, 1120, 1150, 1180, 1200]
       },
       "False Bay (Boulders)": {
         population: 650,
-        breedingRate: "68%",
         trend: "Declining",
         lastSurvey: "2023-04-10",
-        populationHistory: [700, 680, 670, 660, 650],
-        breedingHistory: [72, 71, 70, 69, 68]
+        populationHistory: [700, 680, 670, 660, 650]
       },
       "Robben Island": {
         population: 320,
-        breedingRate: "65%",
         trend: "Stable",
         lastSurvey: "2023-03-18",
-        populationHistory: [310, 315, 320, 320, 320],
-        breedingHistory: [63, 64, 65, 65, 65]
+        populationHistory: [310, 315, 320, 320, 320]
       },
       "Algoa Bay": {
         population: 230,
-        breedingRate: "60%",
         trend: "Growing",
         lastSurvey: "2023-07-05",
         populationHistory: [200, 210, 215, 220, 230],
-        breedingHistory: [55, 57, 58, 59, 60]
       }
     };
 
@@ -455,14 +465,11 @@
       const tableBody = document.getElementById('colony-data');
       tableBody.innerHTML = '';
       
-      // Create detailed rows for the colony
-      const metrics = [
-        { name: 'Population', value: colony.population, trend: colony.trend },
-        { name: 'Breeding Success Rate', value: colony.breedingRate, trend: colony.trend },
-        { name: 'Nests Count', value: Math.floor(colony.population / 2), trend: colony.trend },
-        { name: 'Chicks Fledged', value: Math.floor(colony.population * parseFloat(colony.breedingRate) / 100), trend: colony.trend }
-      ];
-      
+     // Create detailed rows for the colony
+const metrics = [
+  { name: 'Population', value: colony.population, trend: colony.trend },
+  { name: 'Breeding Success Rate', value: colony.breedingRate, trend: colony.trend }
+];
       metrics.forEach(metric => {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -519,7 +526,6 @@
         
         const colony = colonyData[station.name] || {
           population: Math.floor(Math.random() * 1000) + 200,
-          breedingRate: `${Math.floor(Math.random() * 30) + 60}%`,
           trend: ["Stable", "Growing", "Declining"][Math.floor(Math.random() * 3)],
           lastSurvey: "2023-" + (Math.floor(Math.random() * 12) + 1).toString().padStart(2, '0') + "-" + (Math.floor(Math.random() * 28) + 1).toString().padStart(2, '0')
         };
@@ -567,6 +573,7 @@
 
       mapInitialized = true;
     }
+    
 
     // Set profile as default active section
     document.addEventListener('DOMContentLoaded', function() {

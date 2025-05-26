@@ -1,0 +1,10 @@
+flask
+pymongo
+scikit-learn
+joblib
+twilio
+numpy
+gunicorn        # If deploying Flask in production
+python-dotenv   # For .env configuration file loading
+pillow          # If you’re doing any image processing
+opencv-python   # If you’re using ESP32-CAM images
