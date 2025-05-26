@@ -10,7 +10,7 @@ import joblib
 app = Flask(__name__)
 
 # MongoDB setup
-client_mongo = MongoClient("mongodb+srv://zolilemikezoko:zolilemikezoko@waddleway.cafrdzu.mongodb.net/?retryWrites=true&w=majority&appName=WaddleWay")
+client_mongo = MongoClient("database_url")
 db = client_mongo['test']
 collection = db['weight_readings']
 
@@ -19,11 +19,11 @@ scaler = joblib.load("scaler.pkl")
 model = joblib.load("isolation_forest_model.pkl")
 
 # Twilio setup
-account_sid = "AC2f2f042f3b77f314da74810869f6fe37"
-auth_token = "1c1a5da27f085e6f7b40546454c5f3dc"
+account_sid = "account_sid"
+auth_token = "auth_token"
 twilio_client = Client(account_sid, auth_token)
-twilio_from = "+16067052527"
-twilio_to = "+27730969889"
+twilio_from = "twilio_number"
+twilio_to = "receiver_number"
 
 @app.route('/api/weight_readings', methods=['POST'])
 def receive_data():
